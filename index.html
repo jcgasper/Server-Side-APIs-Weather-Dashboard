@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Weather Dashboard</title>
+    <!--loads CSS bootstrap styles-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="./assets/css/styles.css" />
+  </head>
+    <body>
+        <!--Page header-->
+        
+        <header>
+            <h1>Weather Dashboard</h1>
+        </header>
+
+        <div class="container">
+          <div class="row">
+      
+            <div class="col-md-3">
+      
+              <div class="card search-bar">
+                
+                <div class="card-body">
+                  <p>Search for a city:</p>            
+                  <div class="input-group mb-3">
+                    <!-- Input box with  -->
+                    <input class="cityInput" type="text" class="form" placeholder="Enter a city!">
+                      <div class="input-group-append">
+                        <!--  -->
+                        <button class=" submitBtn btn btn-primary" type="submit">Submit</button>
+                      </div>
+                    </div>
+                    <hr>
+                    <!--  -->
+                  <div class="search-history">
+                    <ul class="history-list">
+                      <li class="liElement">TEST HISTORY</li>
+                      
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-9">
+              <div class="row">
+                <div class="card">
+                  <div class="card-body">
+                    <!-- -->
+                    <h5 class="card-title city-name">City + Emoji</h5>
+                    <ul>
+                       <!-- -->
+                      
+                      <li class="card-text temp">Temp:</li>
+                      <li class="card-text humidity">Humidity:</li>
+                      <li class="card-text wind">Windspeed:</li>
+                      <li class="card-text UVI">UV Index:</li>
+                    </ul>
+                  </div>
+                </div>
+            </div>
+            <!--  -->
+            
+            <div class="row">
+                <!--  -->
+                <h5 class="card-title">5-Day Forecast</h5>
+            </div>
+            <!--  -->
+            <div class='row weekForecast'>
+              
+              <div class="col mx-1">
+                <div class="card-body forecast box1">
+                  <h3 class="card-title">TEST</h3>
+                  
+                  <ul>
+                    <li>DATE</li>
+                    <li>EMOJI</li>
+                    <li>TEMP</li>
+                    <li>Wind</li>
+                    <li>Humidity</li>
+                  </ul>
+                
+                
+                
+                
+                </div>
+              </div>
+              
+              <div class="col mx-1">
+                <div class="card-body forecast box2">
+                  <h3 class="card-title">TEST</h3>
+                  
+                  <ul>
+                    <li>DATE</li>
+                    <li>EMOJI</li>
+                    <li>TEMP</li>
+                    <li>Wind</li>
+                    <li>Humidity</li>
+                  </ul>
+                
+                
+                </div>
+              </div>
+              <div class="col mx-1">
+                <div class="card-body forecast box3">
+                  <h3 class="card-title">TEST</h3>
+                  
+                  <ul>
+                    <li>DATE</li>
+                    <li>EMOJI</li>
+                    <li>TEMP</li>
+                    <li>Wind</li>
+                    <li>Humidity</li>
+                  </ul>
+                
+                
+                
+                
+                </div>
+              </div>
+
+              <div class="col mx-1">
+                <div class="card-body forecast box4">
+                  <h3 class="card-title">TEST</h3>
+                  
+                  <ul>
+                    <li>DATE</li>
+                    <li>EMOJI</li>
+                    <li>TEMP</li>
+                    <li>Wind</li>
+                    <li>Humidity</li>
+                  </ul>
+                
+                
+                
+                
+                </div>
+              </div>
+
+              <div class="col mx-1">
+                <div class="card-body forecast box5">
+                  <h3 class="card-title">TEST</h3>
+                  
+                  <ul>
+                    <li>DATE</li>
+                    <li>EMOJI</li>
+                    <li>TEMP</li>
+                    <li>Wind</li>
+                    <li>Humidity</li>
+                  </ul>
+                
+                
+                
+                
+                </div>
+              </div>
+
+
+
+
+
+            
+            
+            </div>
+          </div>
+        </div>
+        
+        
+        
+        <script src="./assets/js/script.js"></script>
+  </body>
+  </html>

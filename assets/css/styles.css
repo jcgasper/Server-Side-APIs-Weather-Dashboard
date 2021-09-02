@@ -1,0 +1,11 @@
+header {
+    text-align: center;
+    background-color: darkcyan;
+}
+
+.forecast {
+    color: white;
+    background-color:#0275d8;
+    border-radius: 5px;
+    font-size: 8pt;
+}
