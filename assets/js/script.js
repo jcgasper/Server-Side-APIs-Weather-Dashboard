@@ -5,11 +5,26 @@
 //Query selectors
 
 let tempEl = document.querySelector(".temp");
+let humidityEl = document.querySelector(".humidity");
+let cityEl = document.querySelector(".city-name");
+let windEl = document.querySelector(".wind");
+let uvEl = document.querySelector(".uv");
+
+
 let submitElement = document.querySelector(".submitBtn");
 let inputElement = document.querySelector(".cityInput");
+let historyList = document.querySelector(".search-history");
 
 //needs https:/ to work 
-fetch('https:/api.openweathermap.org/data/2.5/weather?q=columbus&appid=e4d6a2bce15eef1bf3b9ca465ebb058a', {
+function runApiCurr(cityName) {
+
+let temp;
+let humidity;
+let windspeed;
+
+
+
+  fetch('https:/api.openweathermap.org/data/2.5/weather?q='+cityName+'&appid=e4d6a2bce15eef1bf3b9ca465ebb058a', {
   // The browser fetches the resource from the remote server without first looking in the cache.
   // The browser will then update the cache with the downloaded resource.
   cache: 'reload',
@@ -19,26 +34,85 @@ fetch('https:/api.openweathermap.org/data/2.5/weather?q=columbus&appid=e4d6a2bce
   
   })
   .then(function (data) {
-    console.log(data.main.temp);
+    console.log(data);
+    
+    //assigns parsed data to variables
+    temp = data.main.temp;
+    humidity = data.main.humidity;
+    windspeed = data.wind.speed;
     
     
-  });
+    
+    //displays cityName on screen
+    let date = new Date();
+    month = date.getMonth();
+    day = date.getDay();
+    year = date.getFullYear()
+    console.log(month);
+    
 
+    cityEl.textContent = cityName + " (" +month +"/"+day+"/"+year+")";
+    
+    //convert kelvin to ferenheit
+    temp = (temp-273.15) * 9/5 + 32;
+    temp = temp.toFixed(2);
+
+    tempEl.textContent = "Temp: "+ temp + " °F";
+    windEl.textContent ="Wind: " + windspeed + " mph";
+    humidityEl.textContent = "Humidity: " +humidity + "%";  
+    
+    
+    
+  })
+  .then(uvFunc(cityName));
+  
+
+  
+ 
+ 
+}
+
+
+function uvFunc(cityName) {
+  console.log("TEST FUNC " + cityName);
+}
+
+//run 5day API
 
   function formSubmit(event) {
     event.preventDefault();
     let inputValue = inputElement.value;
+    
+    
+    
+    historyFunc(inputValue);
     console.log(inputValue);
-
+    inputElement.value = "";
+    
     if(!inputValue) {
       alert("Please Input a city");
       return;
     }
     
     console.log("submit Test");
+    
+    runApiCurr(inputValue);
   }
 
+  function historyFunc(city) {
+    let listItem = document.createElement("li");
+    listItem.textContent = city;
+    historyList.append(listItem);
 
+    //expand to add class to created li items, so that you can click for search history
+
+
+  }
+
+  function currWeather(city,temp,humidity,windspeed,) {
+    console.log("CURR WEATHER");
+    
+  }
 
 
 
