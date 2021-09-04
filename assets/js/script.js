@@ -22,7 +22,8 @@ function runApiCurr(cityName) {
 let temp;
 let humidity;
 let windspeed;
-
+let weatherStatus;
+let weatherIcon;
   fetch('https:/api.openweathermap.org/data/2.5/weather?q='+cityName+'&appid=e4d6a2bce15eef1bf3b9ca465ebb058a', {
   // The browser fetches the resource from the remote server without first looking in the cache.
   // The browser will then update the cache with the downloaded resource.
@@ -34,7 +35,45 @@ let windspeed;
   })
   .then(function (data) {
     
-    //assigns parsed data to variables
+    //capitalizes city name if left lowercase on input
+    //cityName = capFunction(cityName);
+    //console.log(cityName);
+
+    //check data.weather[0].main and assigns emoji based on status
+    weatherStatus = data.weather[0].main;
+    
+    
+    if (weatherStatus == "Clouds") {
+      weatherIcon = "☁️";
+    }
+
+    if (weatherStatus == "Clear") {
+      weatherIcon = "☀️";
+    }
+
+    if (weatherStatus == "Atmosphere") {
+      weatherIcon = "🌫️";
+    }
+    
+    if (weatherStatus == "Snow") {
+    weatherIcon = "🌨️";
+    }
+
+    if (weatherStatus == "Rain") {
+      weatherIcon = "🌧️";
+    }
+
+    if (weatherStatus == "Drizzle") {
+      weatherIcon = "🌧️";
+    }
+    
+    if (weatherStatus == "Thunderstorm") {
+      weatherIcon = "🌩️";
+    }
+
+    
+    
+    // assigns temp, humidity, and speed to variables
     temp = data.main.temp;
     humidity = data.main.humidity;
     windspeed = data.wind.speed;
@@ -49,7 +88,7 @@ let windspeed;
     console.log(month);
     
 
-    cityEl.textContent = cityName + " (" +month +"/"+day+"/"+year+")";
+    cityEl.textContent = cityName + weatherIcon + " (" +month +"/"+day+"/"+year+")";
     
     //convert kelvin to ferenheit
     temp = (temp-273.15) * 9/5 + 32;
@@ -69,7 +108,8 @@ let windspeed;
   function formSubmit(event) {
     event.preventDefault();
     let inputValue = inputElement.value;
-    
+    //capitilizes city input if left lowercase
+    inputValue = capFunction(inputValue);
     
     
     historyFunc(inputValue);
@@ -168,7 +208,9 @@ let windspeed;
   
   }
 
-
+  function capFunction(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
 
   //create eventlistner to get cityname from search bar + add to search history
   submitElement.addEventListener('click', formSubmit);
