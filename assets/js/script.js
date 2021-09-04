@@ -8,7 +8,7 @@ let tempEl = document.querySelector(".temp");
 let humidityEl = document.querySelector(".humidity");
 let cityEl = document.querySelector(".city-name");
 let windEl = document.querySelector(".wind");
-let uvEl = document.querySelector(".uv");
+let uvEl = document.querySelector(".UVI");
 
 
 let submitElement = document.querySelector(".submitBtn");
@@ -22,8 +22,6 @@ let temp;
 let humidity;
 let windspeed;
 
-
-
   fetch('https:/api.openweathermap.org/data/2.5/weather?q='+cityName+'&appid=e4d6a2bce15eef1bf3b9ca465ebb058a', {
   // The browser fetches the resource from the remote server without first looking in the cache.
   // The browser will then update the cache with the downloaded resource.
@@ -34,7 +32,6 @@ let windspeed;
   
   })
   .then(function (data) {
-    console.log(data);
     
     //assigns parsed data to variables
     temp = data.main.temp;
@@ -60,22 +57,11 @@ let windspeed;
     tempEl.textContent = "Temp: "+ temp + " °F";
     windEl.textContent ="Wind: " + windspeed + " mph";
     humidityEl.textContent = "Humidity: " +humidity + "%";  
-    
-    
-    
+  
   })
-  .then(uvFunc(cityName));
-  
+  .then(geoCodingApi(cityName));
+  }
 
-  
- 
- 
-}
-
-
-function uvFunc(cityName) {
-  console.log("TEST FUNC " + cityName);
-}
 
 //run 5day API
 
@@ -97,6 +83,7 @@ function uvFunc(cityName) {
     console.log("submit Test");
     
     runApiCurr(inputValue);
+  
   }
 
   function historyFunc(city) {
@@ -109,13 +96,56 @@ function uvFunc(cityName) {
 
   }
 
-  function currWeather(city,temp,humidity,windspeed,) {
-    console.log("CURR WEATHER");
+ 
+
+  function geoCodingApi(cityName) {
+    let lat;
+    let lon;
+  fetch('http://api.openweathermap.org/geo/1.0/direct?q='+cityName+'&limit=1&appid=e4d6a2bce15eef1bf3b9ca465ebb058a', {
+    // The browser fetches the resource from the remote server without first looking in the cache.
+    // The browser will then update the cache with the downloaded resource.
+    cache: 'reload',
+  })
+    .then(function (response) {
+      return response.json();
     
+    })
+    .then(function (data) {
+      
+       lat = data[0].lat;
+       lon = data[0].lon;
+      
+      
+      uvIndexAPI(lat,lon);
+     
+    })
+    
+  
+  
   }
 
+  function uvIndexAPI(lat,lon) {
+    console.log("api test " + lat);
+    console.log("api test " + lon);
 
-
+    fetch('https://api.openweathermap.org/data/2.5/onecall?lat='+lat+'&lon='+lon+'&appid=e4d6a2bce15eef1bf3b9ca465ebb058a', {
+      // The browser fetches the resource from the remote server without first looking in the cache.
+      // The browser will then update the cache with the downloaded resource.
+      cache: 'reload',
+    })
+      .then(function (response) {
+        return response.json();
+      
+      })
+      .then(function (data) {
+        let uv = data.current.uvi;
+        uvEl.textContent = "UV Index: " +uv;
+        
+      })
+  
+  
+  
+  }
 
 
 
