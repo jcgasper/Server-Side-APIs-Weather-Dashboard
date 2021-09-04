@@ -9,6 +9,7 @@ let humidityEl = document.querySelector(".humidity");
 let cityEl = document.querySelector(".city-name");
 let windEl = document.querySelector(".wind");
 let uvEl = document.querySelector(".UVI");
+let uvSpan = document.querySelector(".uvInsert");
 
 
 let submitElement = document.querySelector(".submitBtn");
@@ -139,7 +140,27 @@ let windspeed;
       })
       .then(function (data) {
         let uv = data.current.uvi;
-        uvEl.textContent = "UV Index: " +uv;
+        uvEl.style.display = "inherit";
+        
+        uvSpan.textContent = uv;
+        
+        //write if then to change background color of uv depending on value
+        if (uv<=10) {
+          uvSpan.style.backgroundColor = "red"
+        }  
+        if (uv <8) {
+          uvSpan.style.backgroundColor = "orange"
+        }
+        
+        if (uv <6) {
+          uvSpan.style.backgroundColor = "yellow"
+        }
+        
+         
+        if (uv <3) {
+          uvSpan.style.backgroundColor = "green"
+        }  
+        
         
       })
   
