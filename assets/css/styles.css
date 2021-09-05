@@ -21,3 +21,8 @@ header {
 .UVI {
     display: none;
 }
+
+ul {
+    list-style: none;
+    
+}

@@ -11,6 +11,14 @@ let windEl = document.querySelector(".wind");
 let uvEl = document.querySelector(".UVI");
 let uvSpan = document.querySelector(".uvInsert");
 
+let dayOne = document.querySelector(".day-one");
+let dayTwo = document.querySelector(".day-two");
+let dayThree = document.querySelector(".day-three");
+let dayFour = document.querySelector(".day-four");
+let dayFive = document.querySelector(".day-five");
+
+let DayElArray = [dayOne,dayTwo,dayThree,dayFour,dayFive];
+
 
 let submitElement = document.querySelector(".submitBtn");
 let inputElement = document.querySelector(".cityInput");
@@ -34,10 +42,10 @@ let weatherIcon;
   
   })
   .then(function (data) {
-    
+    console.log(data);
     //capitalizes city name if left lowercase on input
     //cityName = capFunction(cityName);
-    //console.log(cityName);
+    
 
     //check data.weather[0].main and assigns emoji based on status
     weatherStatus = data.weather[0].main;
@@ -71,21 +79,30 @@ let weatherIcon;
       weatherIcon = "🌩️";
     }
 
+    if (weatherStatus == "Mist") {
+      weatherIcon = "🌫️"
+    }
+
     
     
     // assigns temp, humidity, and speed to variables
     temp = data.main.temp;
     humidity = data.main.humidity;
     windspeed = data.wind.speed;
+
+    
     
     
     
     //displays cityName on screen
     let date = new Date();
-    month = date.getMonth();
-    day = date.getDay();
+    
+    month = date.getMonth() +1;
+   
+    day = date.getDate();
+    
     year = date.getFullYear()
-    console.log(month);
+    
     
 
     cityEl.textContent = cityName + weatherIcon + " (" +month +"/"+day+"/"+year+")";
@@ -113,7 +130,7 @@ let weatherIcon;
     
     
     historyFunc(inputValue);
-    console.log(inputValue);
+    
     inputElement.value = "";
     
     if(!inputValue) {
@@ -121,9 +138,10 @@ let weatherIcon;
       return;
     }
     
-    console.log("submit Test");
+    
     
     runApiCurr(inputValue);
+    
   
   }
 
@@ -158,6 +176,7 @@ let weatherIcon;
       
       
       uvIndexAPI(lat,lon);
+      fiveDayForecast(lat,lon);
      
     })
     
@@ -166,8 +185,7 @@ let weatherIcon;
   }
 
   function uvIndexAPI(lat,lon) {
-    console.log("api test " + lat);
-    console.log("api test " + lon);
+    
 
     fetch('https://api.openweathermap.org/data/2.5/onecall?lat='+lat+'&lon='+lon+'&appid=e4d6a2bce15eef1bf3b9ca465ebb058a', {
       // The browser fetches the resource from the remote server without first looking in the cache.
@@ -180,6 +198,7 @@ let weatherIcon;
       })
       .then(function (data) {
         let uv = data.current.uvi;
+        
         uvEl.style.display = "inherit";
         
         uvSpan.textContent = uv;
@@ -207,10 +226,134 @@ let weatherIcon;
   
   
   }
-
+    // work on expanded functionality to check if city has spaces ex. Los angeles only cap's first letter
   function capFunction(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
+
+
+  function fiveDayForecast(lat,lon) { 
+    let timestamp;
+    let month;
+    let day;
+    let year;
+    let date;
+    fetch('https://api.openweathermap.org/data/2.5/onecall?lat='+lat+'&lon='+lon+'&exclude=current,minutely,hourly,alerts&appid=e4d6a2bce15eef1bf3b9ca465ebb058a', {
+      // The browser fetches the resource from the remote server without first looking in the cache.
+      // The browser will then update the cache with the downloaded resource.
+      cache: 'reload',
+    })
+      .then(function (response) {
+        return response.json();
+      
+      })
+      .then(function (data) {
+        
+        console.log(data);
+
+        //gets approx every day around 1, may depend on time of DAY API gets called
+        
+        for (let i=1; i<6; i++) {
+        
+        let liElDate = document.createElement("li");
+        let liElEmoji = document.createElement("li");
+        let liElTemp = document.createElement("li");
+        let liElWind = document.createElement("li");
+        let liElHumidity = document.createElement("li");
+        
+        //day 1
+        timestamp = data.daily[i].dt;
+        
+
+        date = new Date(timestamp*1000);
+
+        month = date.getMonth() +1;
+
+        day = date.getDate();
+
+        year = date.getFullYear();
+
+        liElDate.textContent = month + "/" + day + "/" + year;
+          
+        DayElArray[i-1].append(liElDate);
+        
+        let weatherStatus = data.daily[i].weather[0].main;
+        console.log(weatherStatus);
+        let weatherIcon;
+        
+        console.log(weatherIcon);
+
+        if (weatherStatus == "Clouds") {
+          weatherIcon = "☁️";
+        }
+    
+        if (weatherStatus == "Clear") {
+          weatherIcon = "☀️";
+        }
+    
+         if (weatherStatus == "Atmosphere") {
+          weatherIcon = "🌫️";
+        }
+        
+         if (weatherStatus == "Snow") {
+        weatherIcon = "🌨️";
+        }
+    
+        if (weatherStatus == "Rain") {
+          weatherIcon = "🌧️";
+        }
+    
+        if (weatherStatus == "Drizzle") {
+          weatherIcon = "🌧️";
+        }
+        
+         if (weatherStatus == "Thunderstorm") {
+          weatherIcon = "🌩️";
+        }
+    
+         if (weatherStatus == "Mist") {
+          weatherIcon = "🌫️"
+        
+        }
+        console.log(weatherIcon);
+
+        liElEmoji = weatherIcon;
+        DayElArray[i-1].append(liElEmoji);
+
+        let temp = data.daily[i].temp.day;
+        //convert kelvin to ferenheit
+        temp = (temp-273.15) * 9/5 + 32;
+        temp = temp.toFixed(2);
+        liElTemp.textContent = temp + "°F";
+        DayElArray[i-1].append(liElTemp);
+
+        liElWind.textContent = data.daily[i].wind_speed + " MPH";
+        
+        DayElArray[i-1].append(liElWind);
+
+        liElHumidity.textContent = "Humidity: " +data.daily[i].humidity +"%";
+
+        DayElArray[i-1].append(liElHumidity);
+
+
+      
+      }
+
+
+      
+      
+
+
+
+
+
+
+
+
+      })
+
+}
+
 
   //create eventlistner to get cityname from search bar + add to search history
   submitElement.addEventListener('click', formSubmit);
