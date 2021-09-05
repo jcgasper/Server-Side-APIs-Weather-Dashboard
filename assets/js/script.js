@@ -22,7 +22,7 @@ let DayElArray = [dayOne,dayTwo,dayThree,dayFour,dayFive];
 
 let submitElement = document.querySelector(".submitBtn");
 let inputElement = document.querySelector(".cityInput");
-let historyList = document.querySelector(".search-history");
+let historyList = document.querySelector(".history-list");
 
 //needs https:/ to work 
 function runApiCurr(cityName) {
@@ -340,20 +340,20 @@ let weatherIcon;
       }
 
 
-      
-      
-
-
-
-
-
-
-
-
       })
 
 }
 
+function historyClick(event) {
+  let input = event.target.textContent;
+  
+   
+
+}
+
+
 
   //create eventlistner to get cityname from search bar + add to search history
   submitElement.addEventListener('click', formSubmit);
+
+  historyList.addEventListener('click', historyClick);
