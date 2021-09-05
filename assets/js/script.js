@@ -42,7 +42,7 @@ let weatherIcon;
   
   })
   .then(function (data) {
-    console.log(data);
+    
     //capitalizes city name if left lowercase on input
     //cityName = capFunction(cityName);
     
@@ -124,6 +124,9 @@ let weatherIcon;
 
   function formSubmit(event) {
     event.preventDefault();
+    //clears previous 5 day forecast if present
+    clearFunction();
+    
     let inputValue = inputElement.value;
     //capitilizes city input if left lowercase
     inputValue = capFunction(inputValue);
@@ -249,7 +252,7 @@ let weatherIcon;
       })
       .then(function (data) {
         
-        console.log(data);
+        
 
         //gets approx every day around 1, may depend on time of DAY API gets called
         
@@ -278,10 +281,10 @@ let weatherIcon;
         DayElArray[i-1].append(liElDate);
         
         let weatherStatus = data.daily[i].weather[0].main;
-        console.log(weatherStatus);
+        
         let weatherIcon;
         
-        console.log(weatherIcon);
+        
 
         if (weatherStatus == "Clouds") {
           weatherIcon = "☁️";
@@ -315,7 +318,7 @@ let weatherIcon;
           weatherIcon = "🌫️"
         
         }
-        console.log(weatherIcon);
+        
 
         liElEmoji = weatherIcon;
         DayElArray[i-1].append(liElEmoji);
@@ -344,10 +347,22 @@ let weatherIcon;
 
 }
 
+function clearFunction() {
+
+    for (let i = 0; i < DayElArray.length; i++) {
+      DayElArray[i].innerHTML = '';
+
+    }
+
+}
+
+
 function historyClick(event) {
   let input = event.target.textContent;
+  clearFunction();
+  runApiCurr(input);
   
-   
+  
 
 }
 
