@@ -148,10 +148,26 @@ let weatherIcon;
   
   }
 
+  //ADD save to local storage feature, add feature to check for duplicate cities
   function historyFunc(city) {
+    var cityList = [];
+    
+    console.log(cityList);
+    //checks if localstorage exists
+    
+    if (localStorage.getItem("cityList") != null) {
+      console.log("local storage test");
+      cityList = JSON.parse(localStorage.getItem("cityList"));
+    }
+   
+    cityList.push(city);
+
     let listItem = document.createElement("li");
     listItem.textContent = city;
     historyList.append(listItem);
+
+
+    localStorage.setItem("cityList",JSON.stringify(cityList));
 
     //expand to add class to created li items, so that you can click for search history
 
@@ -231,8 +247,14 @@ let weatherIcon;
   }
     // work on expanded functionality to check if city has spaces ex. Los angeles only cap's first letter
   function capFunction(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
+    
+    //return string.charAt(0).toUpperCase() + string.slice(1);
+
+    return string.replace(/\w\S*/g, function(txt){
+    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      
+});
+ }
 
 
   function fiveDayForecast(lat,lon) { 
@@ -356,14 +378,28 @@ function clearFunction() {
 
 }
 
+//loads search history, runs on page start
+function init() {
+  if (localStorage !== null) {
+  
+  let cityList = JSON.parse(localStorage.getItem("cityList"))
+
+  for (let i = 0; i < cityList.length; i++) {
+    let listItem = document.createElement("li");
+    listItem.textContent = cityList[i];
+    historyList.append(listItem);
+
+  }
+}
+
+}
+
 
 function historyClick(event) {
   let input = event.target.textContent;
   clearFunction();
   runApiCurr(input);
   
-  
-
 }
 
 
@@ -372,3 +408,5 @@ function historyClick(event) {
   submitElement.addEventListener('click', formSubmit);
 
   historyList.addEventListener('click', historyClick);
+
+  init();
