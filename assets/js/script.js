@@ -23,14 +23,15 @@ let inputElement = document.querySelector(".cityInput");
 let historyList = document.querySelector(".history-list");
 
 
-function runApiCurr(cityName) {
+function runApiCurr(lat,lon,cityName) {
 
 let temp;
 let humidity;
 let windspeed;
 let weatherStatus;
 let weatherIcon;
-  fetch('https:/api.openweathermap.org/data/2.5/weather?q='+cityName+'&appid=e4d6a2bce15eef1bf3b9ca465ebb058a', {
+  //used different api originally but had to change last minute because it was giving me errors on live website
+  fetch('https://api.openweathermap.org/data/2.5/onecall?lat='+lat+'&lon='+lon+'&appid=e4d6a2bce15eef1bf3b9ca465ebb058a', {
 
   cache: 'reload',
 })
@@ -39,9 +40,9 @@ let weatherIcon;
   
   })
   .then(function (data) {
+      console.log(data);
     
-    
-    weatherStatus = data.weather[0].main;
+     weatherStatus = data.daily[0].weather[0].main;
     
     
     if (weatherStatus == "Clouds") {
@@ -78,9 +79,9 @@ let weatherIcon;
 
     
     // assigns temp, humidity, and speed to variables
-    temp = data.main.temp;
-    humidity = data.main.humidity;
-    windspeed = data.wind.speed;
+    temp = data.daily[0].temp.day;
+    humidity = data.daily[0].humidity
+    windspeed = data.daily[0].wind_speed
 
     
     
@@ -105,7 +106,7 @@ let weatherIcon;
     humidityEl.textContent = "Humidity: " +humidity + "%";  
   
   })
-  .then(geoCodingApi(cityName));
+  
   }
 
 
@@ -130,7 +131,7 @@ let weatherIcon;
       return;
     }
     
-    runApiCurr(inputValue);
+    geoCodingApi(inputValue);
     
   }
 
@@ -179,7 +180,7 @@ let weatherIcon;
        lat = data[0].lat;
        lon = data[0].lon;
       
-      
+      runApiCurr(lat,lon,cityName);
       uvIndexAPI(lat,lon);
       fiveDayForecast(lat,lon);
      
@@ -384,7 +385,7 @@ function init() {
 function historyClick(event) {
   let input = event.target.textContent;
   clearFunction();
-  runApiCurr(input);
+  geoCodingApi(input);
   
 }
 
