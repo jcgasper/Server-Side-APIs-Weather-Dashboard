@@ -1,6 +1,4 @@
-//curr weather api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}
-// city name 5day forecast api.openweathermap.org/data/2.5/forecast?q={city name}&appid={API key}
-//API key e4d6a2bce15eef1bf3b9ca465ebb058a
+
 
 //Query selectors
 
@@ -24,7 +22,7 @@ let submitElement = document.querySelector(".submitBtn");
 let inputElement = document.querySelector(".cityInput");
 let historyList = document.querySelector(".history-list");
 
-//needs https:/ to work 
+
 function runApiCurr(cityName) {
 
 let temp;
@@ -33,8 +31,7 @@ let windspeed;
 let weatherStatus;
 let weatherIcon;
   fetch('https:/api.openweathermap.org/data/2.5/weather?q='+cityName+'&appid=e4d6a2bce15eef1bf3b9ca465ebb058a', {
-  // The browser fetches the resource from the remote server without first looking in the cache.
-  // The browser will then update the cache with the downloaded resource.
+
   cache: 'reload',
 })
   .then(function (response) {
@@ -43,11 +40,7 @@ let weatherIcon;
   })
   .then(function (data) {
     
-    //capitalizes city name if left lowercase on input
-    //cityName = capFunction(cityName);
     
-
-    //check data.weather[0].main and assigns emoji based on status
     weatherStatus = data.weather[0].main;
     
     
@@ -84,13 +77,11 @@ let weatherIcon;
     }
 
     
-    
     // assigns temp, humidity, and speed to variables
     temp = data.main.temp;
     humidity = data.main.humidity;
     windspeed = data.wind.speed;
 
-    
     
     
     
@@ -102,8 +93,6 @@ let weatherIcon;
     day = date.getDate();
     
     year = date.getFullYear()
-    
-    
 
     cityEl.textContent = cityName + weatherIcon + " (" +month +"/"+day+"/"+year+")";
     
@@ -141,11 +130,8 @@ let weatherIcon;
       return;
     }
     
-    
-    
     runApiCurr(inputValue);
     
-  
   }
 
   //ADD save to local storage feature, add feature to check for duplicate cities
@@ -245,11 +231,11 @@ let weatherIcon;
   
   
   }
-    // work on expanded functionality to check if city has spaces ex. Los angeles only cap's first letter
-  function capFunction(string) {
     
+  function capFunction(string) {
     //return string.charAt(0).toUpperCase() + string.slice(1);
-
+    
+    // found solution online - takes multiple word strings and capitalizes first letter
     return string.replace(/\w\S*/g, function(txt){
     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
       
@@ -276,7 +262,7 @@ let weatherIcon;
         
         
 
-        //gets approx every day around 1, may depend on time of DAY API gets called
+        
         
         for (let i=1; i<6; i++) {
         
@@ -286,7 +272,7 @@ let weatherIcon;
         let liElWind = document.createElement("li");
         let liElHumidity = document.createElement("li");
         
-        //day 1
+        
         timestamp = data.daily[i].dt;
         
 
@@ -306,7 +292,7 @@ let weatherIcon;
         
         let weatherIcon;
         
-        
+        //checks weatherstatus and adjusts icon accordingly
 
         if (weatherStatus == "Clouds") {
           weatherIcon = "☁️";
@@ -368,7 +354,7 @@ let weatherIcon;
       })
 
 }
-
+//clears 5day forecast
 function clearFunction() {
 
     for (let i = 0; i < DayElArray.length; i++) {
@@ -394,7 +380,7 @@ function init() {
 
 }
 
-
+//runs when search history is clicked
 function historyClick(event) {
   let input = event.target.textContent;
   clearFunction();
